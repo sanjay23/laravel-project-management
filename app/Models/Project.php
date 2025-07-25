@@ -18,7 +18,7 @@ use App\Models\User;
 
 class Project extends Model
 {
-    use HasFactory, SoftDeletes, ApiResponser, BaseModel, PaginationTrait, ResourceFilterable, HasUuid;
+    use HasFactory, SoftDeletes, BootModel, ApiResponser, BaseModel, PaginationTrait, ResourceFilterable;
 
 
     protected $fillable = [
@@ -28,6 +28,9 @@ class Project extends Model
         'start_date',
         'end_date',
         'status',
+        'type',
+        'client_name',
+        'budget',
         'deleted_by',
         'created_by',
         'updated_by',
@@ -51,6 +54,8 @@ class Project extends Model
     protected $scopedFilters = [
         'search',
     ];
+
+    public $defaultSort = '-id';
 
     protected $relationship = [
         'users' => [
@@ -84,7 +89,5 @@ class Project extends Model
     {
         return $this->belongsToMany(User::class, 'project_users');
     }
-
-    
 
 }

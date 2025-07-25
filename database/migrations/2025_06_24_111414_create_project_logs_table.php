@@ -13,7 +13,8 @@ return new class extends Migration
             $table->unsignedBigInteger('project_id');
             $table->unsignedBigInteger('user_id');
             $table->date('log_date');
-            $table->decimal('billable_hours',5, 2);
+            $table->decimal('logged_hours',5, 2);
+            $table->decimal('billable_hours',5, 2)->nullable;
             $table->decimal('approved_hours',5, 2)->nullable();
             $table->boolean('approve')->default(false);
             $table->text('description')->nullable();

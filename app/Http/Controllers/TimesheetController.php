@@ -43,11 +43,11 @@ class TimesheetController extends Controller
 
     public function update(Timesheet $projectLog, TimesheetRequest $request)
     {
-        $projectLogObj = $this->timesheetService->update($projectLog, $request->validated());
+        $projectLogObj = $this->timesheetService->update($projectLog->id, $request->validated());
         return $this->success($projectLogObj);
     }
 
-    public function destroy(ProjectLog $projectLog)
+    public function destroy(Timesheet $projectLog)
     {
         $result = $this->timesheetService->destroy($projectLog->id);
         return $this->success($result);

@@ -30,6 +30,9 @@ class Request extends FormRequest
             'start_date' => 'required',
             'end_date' => 'required',
             'status' => 'required',
+            'type' => 'nullable|in:hourly,fix_cost', // Ensure type is either 'hourly' or 'fix_cost'
+            'client_name' => 'nullable|string',
+            'budget' => 'nullable|numeric',
             'user_id' => 'nullable|array',
             'user_id.*' => 'exists:users,id',
         ];

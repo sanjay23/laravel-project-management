@@ -44,7 +44,7 @@ class ProjectController extends Controller
 
     public function update(Project $project, ProjectRequest $request)
     {
-        $projectObj = $this->projectService->update($project, $request->validated());
+        $projectObj = $this->projectService->update($project->id, $request->validated());
         return $this->success($projectObj);
     }
 
