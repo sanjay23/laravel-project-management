@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Project;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectService {
 
@@ -13,20 +14,23 @@ class ProjectService {
         $this->projectModel = new Project;
     }
 
-    public  function resource($id,$inputs)
+    public  function resource($id,$inputs = null)
     {
         $query = $this->projectModel->getQB();
-        if (is_numeric($id)) {
-            $query = $query->whereId($id);
-        } else {
-            $query = $query->whereUuid($id);
-        }
+        $query = $query->whereId($id);
+        
         return $query->firstOrFail();
     }
 
     public function collection($inputs=null)
     {
+        $auth = auth()->user();
+        $role_id = $auth->role_id;
         $query = $this->projectModel->getQB();
+        if($role_id !== config('site.roleArr.admin') && $role_id !== config('site.roleArr.super_admin') && $role_id !== config('site.roleArr.sales')) {
+            $projectIds = array_unique($auth->projects()->pluck('project_id')->toArray());
+            $query = $query->whereIn('id', $projectIds);
+        }
         return (isset($inputs['limit']) && $inputs['limit'] != -1) ? $query->paginate($inputs['limit']) : $query->get();
     }
 
@@ -43,6 +47,9 @@ class ProjectService {
     {
         $project = $this->resource($id);
         $project->update($inputs);
+        if(!empty($inputs['user_id']) && is_array($inputs['user_id'])) {
+            $project->projectUsers()->sync($inputs['user_id'] ?? []);
+        }
         $project = $this->resource($project->id);
         return $project;
     }

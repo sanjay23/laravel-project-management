@@ -11,14 +11,11 @@ class UserService {
         $this->userModel = new User;
     }
 
-    public  function resource($id,$inputs)
+    public  function resource($id,$inputs = null)
     {
         $query = $this->userModel->getQB();
-        if (is_numeric($id)) {
-            $query = $query->whereId($id);
-        } else {
-            $query = $query->whereUuid($id);
-        }
+        $query = $query->whereId($id);
+        
         return $query->firstOrFail();
     }
 

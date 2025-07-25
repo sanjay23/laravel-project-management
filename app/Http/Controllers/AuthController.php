@@ -17,6 +17,9 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid login'], 401);
         }
         $user = Auth::user(); 
+        if ($user->status !== 'active') {
+            return response()->json(['message' => 'User is inactive'], 403);
+        }
         $token = $user->createToken('api-token')->plainTextToken;
 
         // return $this->success(['user' => Auth::user(),'token'=> $token]);

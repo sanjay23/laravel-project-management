@@ -15,12 +15,13 @@ use App\Traits\HasUserAction;
 use App\models\Project;
 use App\models\Timesheet;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Role;
 
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, BaseModel, PaginationTrait, ResourceFilterable, HasUuid, HasApiTokens;
+    use HasFactory, Notifiable, BaseModel, PaginationTrait, ResourceFilterable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -30,7 +31,9 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'role_id',
         'password',
+        'status',
     ];
 
     /**
@@ -53,6 +56,9 @@ class User extends Authenticatable
         ],
         'projectUsers' => [
             'model' => 'App\\Models\\ProjectUser'
+        ],
+        'role' => [
+            'model' => 'App\\Models\\Role',
         ],
     ];
 
@@ -87,9 +93,14 @@ class User extends Authenticatable
         return $this->hasMany(Timesheet::class);
     }
 
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
     public function scopeSearch(object $query, string $value)
     {
-        dd('aa');
-        return $query->Where('name', 'LIKE', "%$value%");
+        return $query->Where('name', 'LIKE', "%$value%")
+            ->orWhere('email', 'LIKE', "%$value%");
     }
 }

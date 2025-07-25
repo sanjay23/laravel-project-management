@@ -17,5 +17,9 @@ trait BootModel
         self::updated(function ($model) use ($authId) {
             $model->updated_by = $authId;
         });
+
+        static::deleting(function ($model) use ($authId) {
+            $model->deleted_by = $authId;
+        });
     }
 }

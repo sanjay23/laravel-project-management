@@ -16,13 +16,14 @@ use App\Models\User;
 
 class Timesheet extends Model
 {
-    use HasFactory,ApiResponser, BaseModel, PaginationTrait, ResourceFilterable, HasUuid;
+    use HasFactory,ApiResponser, BaseModel, PaginationTrait, ResourceFilterable;
     protected $table = 'project_logs';
     protected $fillable = [
         'project_id',
         'user_id',
         'approve',
         'approved_hours',
+        'logged_hours',
         'deleted_by',
         'log_date',
         'billable_hours',
@@ -51,7 +52,7 @@ class Timesheet extends Model
             'model' => 'App\\Models\\Project',
         ],
     ];
-
+    public $defaultSort = '-log_date';
     
 
 

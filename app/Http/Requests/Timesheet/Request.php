@@ -23,12 +23,31 @@ class Request extends FormRequest
      */
     public function rules(): array
     {
+        if ($this->isMethod('POST')) {
+            return $this->storeValidate();
+        } elseif ($this->isMethod('PUT')) {
+            return $this->updateValidate();
+        }
+        
+    }
+
+    public function storeValidate(): array
+    {
         return [
             'project_id' => 'required',
             'user_id' => 'required',
             'approved_hours' => 'nullable',
             'log_date' => 'required',
-            'billable_hours' => 'required',
+            'logged_hours' => 'required',
+            'billable_hours' => 'nullable',
+            'description' => 'nullable',
+        ];
+    }
+
+    public function updateValidate(): array
+    {
+        return [
+            'approved_hours' => 'nullable',
         ];
     }
 }

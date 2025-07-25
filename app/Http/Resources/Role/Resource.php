@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Resources\User;
+namespace App\Http\Resources\Role;
 
-use App\Models\User;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Traits\ResourceFilterable;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -12,7 +12,7 @@ class Resource extends JsonResource
 {
 
      use ResourceFilterable;
-     protected $model = User::class;
+     protected $model = Role::class;
 
     /**
      * Transform the resource into an array.
@@ -22,7 +22,6 @@ class Resource extends JsonResource
     public function toArray(Request $request): array
     {
        $data = $this->fields();
-       $data['role'] = $this->whenLoaded('role');
        return $data;
     }
 }

@@ -28,7 +28,7 @@ trait BaseModel
     {
         $fields = $this->getQueryFields();
         $relationships = $this->getRelationship();
-
+        // dd($relationships);
         foreach ($relationships as $relationship) {
             $relationshipObj = new $relationship['model']();
             $tableName = $relationshipObj->getTable();
@@ -72,6 +72,10 @@ trait BaseModel
             foreach ($this->exactFilters as $key => $value) {
                 array_push($filters, AllowedFilter::exact($value));
             }
+        }
+        // dd($this->defaultSort);
+        if (isset($this->defaultSort)) {
+            $queryBuilder->defaultSort($this->defaultSort);
         }
         $queryBuilder->allowedFilters($filters);
 
